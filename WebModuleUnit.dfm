@@ -2,16 +2,13 @@ object WebModule1: TWebModule1
   OldCreateOrder = False
   Actions = <
     item
-      Name = 'ReverseStringAction'
-      PathInfo = '/ReverseString'
-    end
-    item
-      Name = 'ServerFunctionInvokerAction'
-      PathInfo = '/ServerFunctionInvoker'
+      Name = 'Go'
+      PathInfo = '/Services/Go'
+      OnAction = WebModule1GoAction
     end
     item
       Default = True
-      Name = 'DefaultAction'
+      Name = 'DefaultHandler'
       PathInfo = '/'
       OnAction = WebModuleDefaultAction
     end>

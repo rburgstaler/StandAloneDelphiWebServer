@@ -18,6 +18,8 @@ type
     WebFileDispatcher1: TWebFileDispatcher;
     procedure WebModuleDefaultAction(Sender: TObject;
       Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+    procedure WebModule1GoAction(Sender: TObject; Request: TWebRequest;
+      Response: TWebResponse; var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -33,6 +35,14 @@ uses
   Web.WebReq;
 
 {$R *.dfm}
+
+procedure TWebModule1.WebModule1GoAction(Sender: TObject; Request: TWebRequest;
+  Response: TWebResponse; var Handled: Boolean);
+begin
+  //
+
+  Response.Content:='Hello... from the server';
+end;
 
 procedure TWebModule1.WebModuleDefaultAction(Sender: TObject;
   Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);

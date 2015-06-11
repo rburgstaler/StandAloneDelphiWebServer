@@ -5,7 +5,21 @@
 <script type="text/javascript">
 $(function() {
 	$('.go').unbind().bind('click', function() {
-		$('.container').text((new Date()).toString());		
+		$('.container').text('Request made to the server...');
+
+		$.ajax({
+			"type": "POST",
+			"dataType": 'text',
+			"contentType": "text/plain",
+			"url": 'Services/Go',
+			"data": (new Date()).toString(),
+			"success": function (aData, aStatus, aReq) {
+				$('.container').text(aData);
+			},
+			"error": function (XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.responseText + ' -- ' + textStatus + ' -- ' + errorThrown);
+			}
+		});
 	})
 })
 </script>	
