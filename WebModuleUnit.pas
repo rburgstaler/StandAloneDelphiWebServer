@@ -41,7 +41,7 @@ procedure TWebModule1.WebModule1GoAction(Sender: TObject; Request: TWebRequest;
 begin
   //
 
-  Response.Content:='Hello... from the server';
+  Response.Content:='Hello... from the server: '+Request.Content;
 end;
 
 procedure TWebModule1.WebModuleDefaultAction(Sender: TObject;
