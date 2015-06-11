@@ -38,7 +38,7 @@ procedure TWebModule1.WebModuleDefaultAction(Sender: TObject;
   Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
   if (Request.InternalPathInfo = '') or (Request.InternalPathInfo = '/')then
-    Response.Content := 'Hello world'
+    Response.SendRedirect('/Main.html')
   else
     Response.SendRedirect(Request.InternalScriptName + '/');
 end;

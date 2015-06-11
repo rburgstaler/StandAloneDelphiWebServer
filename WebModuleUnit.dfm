@@ -58,12 +58,8 @@ object WebModule1: TWebModule1
       item
         DirectoryAction = dirInclude
         DirectoryMask = '*'
-      end
-      item
-        DirectoryAction = dirExclude
-        DirectoryMask = '\templates\*'
       end>
-    RootDirectory = '.'
+    RootDirectory = '../web'
     Left = 96
     Top = 144
   end
