@@ -28,12 +28,6 @@ object WebModule1: TWebModule1
     Left = 96
     Top = 75
   end
-  object DSServerClass1: TDSServerClass
-    OnGetClass = DSServerClass1GetClass
-    Server = DSServer1
-    Left = 200
-    Top = 11
-  end
   object WebFileDispatcher1: TWebFileDispatcher
     WebFileExtensions = <
       item

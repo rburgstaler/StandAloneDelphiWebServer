@@ -15,10 +15,7 @@ type
   TWebModule1 = class(TWebModule)
     DSHTTPWebDispatcher1: TDSHTTPWebDispatcher;
     DSServer1: TDSServer;
-    DSServerClass1: TDSServerClass;
     WebFileDispatcher1: TWebFileDispatcher;
-    procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
     procedure WebModuleDefaultAction(Sender: TObject;
       Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
   private
@@ -32,15 +29,10 @@ var
 
 implementation
 
-uses ServerMethodsUnit, Web.WebReq;
+uses
+  Web.WebReq;
 
 {$R *.dfm}
-
-procedure TWebModule1.DSServerClass1GetClass(
-  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
-begin
-  PersistentClass := ServerMethodsUnit.TServerMethods1;
-end;
 
 procedure TWebModule1.WebModuleDefaultAction(Sender: TObject;
   Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
