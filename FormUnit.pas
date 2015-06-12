@@ -2,9 +2,20 @@ unit FormUnit;
 
 interface
 
-uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.AppEvnts, Vcl.StdCtrls, IdHTTPWebBrokerBridge, Web.HTTPApp;
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.AppEvnts,
+  Vcl.StdCtrls,
+  IdHTTPWebBrokerBridge,
+  Web.HTTPApp;
 
 type
   TForm1 = class(TForm)

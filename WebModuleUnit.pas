@@ -3,13 +3,23 @@ unit WebModuleUnit;
 interface
 
 uses
-  System.SysUtils, System.Classes, Web.HTTPApp, Datasnap.DSHTTPCommon,
-  Datasnap.DSHTTPWebBroker, Datasnap.DSServer,
-  Web.WebFileDispatcher, Web.HTTPProd,
+  System.SysUtils,
+  System.Classes,
+  Web.HTTPApp,
+  Datasnap.DSHTTPCommon,
+  Datasnap.DSHTTPWebBroker,
+  Datasnap.DSServer,
+  Web.WebFileDispatcher,
+  Web.HTTPProd,
   DSAuth,
-  Datasnap.DSProxyJavaScript, IndyPeerImpl, Datasnap.DSClientMetadata,
-  Datasnap.DSCommonServer, IPPeerServer,
-  Datasnap.DSMetadata, Datasnap.DSServerMetadata, Datasnap.DSHTTP;
+  Datasnap.DSProxyJavaScript,
+  IndyPeerImpl,
+  Datasnap.DSClientMetadata,
+  Datasnap.DSCommonServer,
+  IPPeerServer,
+  Datasnap.DSMetadata,
+  Datasnap.DSServerMetadata,
+  Datasnap.DSHTTP;
 
 type
   TWebModule1 = class(TWebModule)
