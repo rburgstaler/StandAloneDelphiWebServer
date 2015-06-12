@@ -27,6 +27,7 @@ type
     procedure ButtonStartClick(Sender: TObject);
     procedure ButtonStopClick(Sender: TObject);
     procedure ButtonOpenBrowserClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     FServer: TIdHTTPWebBrokerBridge;
     procedure StartServer;
@@ -84,6 +85,12 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FServer := TIdHTTPWebBrokerBridge.Create(Self);
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  ButtonStopClick(nil);
+  FServer.Free;
 end;
 
 procedure TForm1.StartServer;
