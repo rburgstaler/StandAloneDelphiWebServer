@@ -13,7 +13,7 @@ uses
   Vcl.AppEvnts,
   Vcl.StdCtrls,
   IdHTTPWebBrokerBridge,
-  WebModuleUnit;
+  WebServerUnit;
 
 type
   TForm1 = class(TForm)
@@ -44,7 +44,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Winapi.ShellApi, Datasnap.DSService;
+  Winapi.ShellApi;
 
 procedure TForm1.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 begin

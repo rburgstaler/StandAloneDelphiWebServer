@@ -8,7 +8,8 @@ uses
   Web.WebReq,
   IdHTTPWebBrokerBridge,
   FormUnit in 'FormUnit.pas' {Form1},
-  WebModuleUnit in 'WebModuleUnit.pas' {WebModule1: TWebModule};
+  WebModuleUnit in 'WebModuleUnit.pas' {WebModule1: TWebModule},
+  WebServerUnit in 'WebServerUnit.pas';
 
 {$R *.res}
 
