@@ -12,7 +12,8 @@ uses
   Vcl.Forms,
   Vcl.AppEvnts,
   Vcl.StdCtrls,
-  IdHTTPWebBrokerBridge;
+  IdHTTPWebBrokerBridge,
+  WebModuleUnit;
 
 type
   TForm1 = class(TForm)
@@ -29,9 +30,8 @@ type
     procedure ButtonOpenBrowserClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
-    FServer: TIdHTTPWebBrokerBridge;
-    procedure StartServer;
     { Private declarations }
+    FServer: TWebServer;
   public
     { Public declarations }
   end;
@@ -44,7 +44,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Winapi.ShellApi, Datasnap.DSService, DataSnap.DSSession;
+  Winapi.ShellApi, Datasnap.DSService;
 
 procedure TForm1.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 begin
@@ -57,50 +57,30 @@ procedure TForm1.ButtonOpenBrowserClick(Sender: TObject);
 var
   LURL: string;
 begin
-  StartServer;
+  ButtonStartClick(nil);
   LURL := Format('http://localhost:%s', [EditPort.Text]);
-  ShellExecute(0,
-        nil,
-        PChar(LURL), nil, nil, SW_SHOWNOACTIVATE);
+  ShellExecute(0, nil, PChar(LURL), nil, nil, SW_SHOWNOACTIVATE);
 end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 begin
-  StartServer;
-end;
-
-procedure TerminateThreads;
-begin
-  if TDSSessionManager.Instance <> nil then
-    TDSSessionManager.Instance.TerminateAllSessions;
+  fServer.Port:=StrToInt(EditPort.Text);
+  fServer.StartServer;
 end;
 
 procedure TForm1.ButtonStopClick(Sender: TObject);
 begin
-  TerminateThreads;
-  FServer.Active := False;
-  FServer.Bindings.Clear;
+  fServer.StopServer;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  FServer := TIdHTTPWebBrokerBridge.Create(Self);
+  FServer:=TWebServer.Create;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  ButtonStopClick(nil);
   FServer.Free;
-end;
-
-procedure TForm1.StartServer;
-begin
-  if not FServer.Active then
-  begin
-    FServer.Bindings.Clear;
-    FServer.DefaultPort := StrToInt(EditPort.Text);
-    FServer.Active := True;
-  end;
 end;
 
 end.
