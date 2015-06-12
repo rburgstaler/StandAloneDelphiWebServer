@@ -32,7 +32,8 @@ var
 implementation
 
 uses
-  Web.WebReq;
+  Web.WebReq,
+  IdHTTPWebBrokerBridge;
 
 {$R *.dfm}
 
@@ -54,6 +55,8 @@ begin
 end;
 
 initialization
+  if WebRequestHandler <> nil then WebRequestHandler.WebModuleClass := WebModuleClass;
+
 finalization
   Web.WebReq.FreeWebModules;
 
