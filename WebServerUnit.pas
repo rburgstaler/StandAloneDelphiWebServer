@@ -6,6 +6,7 @@ uses
   Classes,
   SysUtils,
   IdSSLOpenSSL,
+  IdSSL,
   IdHTTPWebBrokerBridge;
 
 
@@ -18,12 +19,14 @@ type
     function getActive: Boolean;
     function getPort: Integer;
     procedure GetSSLPassWord(var Password: String);
+    function getSecure: Boolean;
   public
     constructor Create;
     destructor Destroy; override;
     procedure StartServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
     procedure StopServer;
     property Port: Integer read getPort;
+    property Secure: Boolean read getSecure;
     property Active: Boolean read getActive;
   end;
 
@@ -58,6 +61,11 @@ begin
     Result := FServer.Bindings[0].Port
   else
     Result := -1;
+end;
+
+function TWebServer.getSecure: Boolean;
+begin
+  Result:=FServer.Active and (FServer.IOHandler is TIdServerIOHandlerSSLBase);
 end;
 
 procedure TWebServer.GetSSLPassWord(var Password: String);

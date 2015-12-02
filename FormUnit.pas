@@ -23,6 +23,12 @@ type
     Label1: TLabel;
     ApplicationEvents1: TApplicationEvents;
     ButtonOpenBrowser: TButton;
+    EditSSLPrivateKeyFile: TEdit;
+    EditSSLPrivateKeyPassword: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    EditSSLCertFile: TEdit;
+    Label5: TLabel;
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
     procedure ButtonStopClick(Sender: TObject);
@@ -56,15 +62,18 @@ end;
 procedure TForm1.ButtonOpenBrowserClick(Sender: TObject);
 var
   LURL: string;
+  lProtocol: String;
 begin
+  if WebServerService.Server.Secure then lProtocol:='https'
+  else lProtocol:='http';
   ButtonStartClick(nil);
-  LURL := Format('http://localhost:%s', [EditPort.Text]);
+  LURL := Format('%s://localhost:%d', [lProtocol, WebServerService.Server.Port]);
   ShellExecute(0, nil, PChar(LURL), nil, nil, SW_SHOWNOACTIVATE);
 end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 begin
-  WebServerService.Server.StartServer(StrToInt(EditPort.Text), '', '', '');
+  WebServerService.Server.StartServer(StrToInt(EditPort.Text), EditSSLPrivateKeyFile.Text, EditSSLPrivateKeyPassword.Text, EditSSLCertFile.Text);
 end;
 
 procedure TForm1.ButtonStopClick(Sender: TObject);
@@ -75,11 +84,17 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   EditPort.Text:=IntToStr(WebServerService.Prefs.Port);
+  EditSSLPrivateKeyFile.Text:=WebServerService.Prefs.SSLPrivateKeyFile;
+  EditSSLPrivateKeyPassword.Text:=WebServerService.Prefs.SSLPrivateKeyPassword;
+  EditSSLCertFile.Text:=WebServerService.Prefs.SSLCertFile;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   WebServerService.Prefs.Port:=StrToIntDef(EditPort.Text, 0);
+  WebServerService.Prefs.SSLPrivateKeyFile:=EditSSLPrivateKeyFile.Text;
+  WebServerService.Prefs.SSLPrivateKeyPassword:=EditSSLPrivateKeyPassword.Text;
+  WebServerService.Prefs.SSLCertFile:=EditSSLCertFile.Text;
 end;
 
 end.

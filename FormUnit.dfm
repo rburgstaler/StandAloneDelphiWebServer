@@ -17,10 +17,31 @@ object Form1: TForm1
   TextHeight = 13
   object Label1: TLabel
     Left = 24
-    Top = 48
+    Top = 50
     Width = 20
     Height = 13
     Caption = 'Port'
+  end
+  object Label3: TLabel
+    Left = 24
+    Top = 89
+    Width = 94
+    Height = 13
+    Caption = 'SSL Private Key File'
+  end
+  object Label4: TLabel
+    Left = 24
+    Top = 125
+    Width = 124
+    Height = 13
+    Caption = 'SSL Private Key Password'
+  end
+  object Label5: TLabel
+    Left = 24
+    Top = 158
+    Width = 89
+    Height = 13
+    Caption = 'SSL Certificate File'
   end
   object ButtonStart: TButton
     Left = 24
@@ -50,12 +71,33 @@ object Form1: TForm1
   end
   object ButtonOpenBrowser: TButton
     Left = 24
-    Top = 112
+    Top = 202
     Width = 107
     Height = 25
     Caption = 'Open Browser'
     TabOrder = 3
     OnClick = ButtonOpenBrowserClick
+  end
+  object EditSSLPrivateKeyFile: TEdit
+    Left = 24
+    Top = 104
+    Width = 345
+    Height = 21
+    TabOrder = 4
+  end
+  object EditSSLPrivateKeyPassword: TEdit
+    Left = 24
+    Top = 138
+    Width = 121
+    Height = 21
+    TabOrder = 5
+  end
+  object EditSSLCertFile: TEdit
+    Left = 24
+    Top = 171
+    Width = 345
+    Height = 21
+    TabOrder = 6
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle
