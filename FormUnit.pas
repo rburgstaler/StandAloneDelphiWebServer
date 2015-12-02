@@ -64,8 +64,7 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 begin
-  fServer.Port:=StrToInt(EditPort.Text);
-  fServer.StartServer;
+  fServer.StartServer(StrToInt(EditPort.Text), '', '', '');
 end;
 
 procedure TForm1.ButtonStopClick(Sender: TObject);

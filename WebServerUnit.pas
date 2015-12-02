@@ -5,6 +5,7 @@ interface
 uses
   Classes,
   SysUtils,
+  IdSSLOpenSSL,
   IdHTTPWebBrokerBridge;
 
 
@@ -12,15 +13,17 @@ type
   TWebServer = class
   private
     FServer: TIdHTTPWebBrokerBridge;
-    fPort: Integer;
+    fSSLPrivateKeyPassword: String;
     procedure TerminateThreads;
     function getActive: Boolean;
+    function getPort: Integer;
+    procedure GetSSLPassWord(var Password: String);
   public
     constructor Create;
     destructor Destroy; override;
-    procedure StartServer;
+    procedure StartServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
     procedure StopServer;
-    property Port: Integer read fPort write fPort;
+    property Port: Integer read getPort;
     property Active: Boolean read getActive;
   end;
 
@@ -49,12 +52,40 @@ begin
   Result:=fServer.Active;
 end;
 
-procedure TWebServer.StartServer;
+function TWebServer.getPort: Integer;
 begin
+  if FServer.Bindings.Count > 0 then
+    Result := FServer.Bindings[0].Port
+  else
+    Result := -1;
+end;
+
+procedure TWebServer.GetSSLPassWord(var Password: String);
+begin
+  Password:=fSSLPrivateKeyPassword;
+end;
+
+procedure TWebServer.StartServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
+var
+  lHandler: TIdServerIOHandlerSSLOpenSSL;
+begin
+  if FServer.Active and (FServer.DefaultPort<>APort) then StopServer;
+
   if not FServer.Active then
   begin
+    if (ASSLPrivateKeyFile<>'') and (ASSLPrivateKeyPassword<>'') and (ASSLCertFile<>'') then
+    begin
+      lHandler:=TIdServerIOHandlerSSLOpenSSL.Create;
+      lHandler.SSLOptions.Method := sslvSSLv23;
+      lHandler.OnGetPassword := GetSSLPassword;
+      fSSLPrivateKeyPassword:=ASSLPrivateKeyPassword;
+      lHandler.SSLOptions.CertFile:=ASSLCertFile;
+      lHandler.SSLOptions.KeyFile:=ASSLPrivateKeyFile;
+      FServer.IOHandler:=lHandler;
+    end;
+
     FServer.Bindings.Clear;
-    FServer.DefaultPort := Port;
+    FServer.Bindings.Add.Port:=APort;
     FServer.Active := True;
   end;
 end;
