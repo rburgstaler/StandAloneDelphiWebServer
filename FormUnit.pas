@@ -23,15 +23,14 @@ type
     Label1: TLabel;
     ApplicationEvents1: TApplicationEvents;
     ButtonOpenBrowser: TButton;
-    procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
     procedure ButtonStopClick(Sender: TObject);
     procedure ButtonOpenBrowserClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
-    FServer: TWebServer;
   public
     { Public declarations }
   end;
@@ -44,13 +43,14 @@ implementation
 {$R *.dfm}
 
 uses
-  Winapi.ShellApi;
+  Winapi.ShellApi,
+  WebServerSvc;
 
 procedure TForm1.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 begin
-  ButtonStart.Enabled := not FServer.Active;
-  ButtonStop.Enabled := FServer.Active;
-  EditPort.Enabled := not FServer.Active;
+  ButtonStart.Enabled := not WebServerService.Server.Active;
+  ButtonStop.Enabled := WebServerService.Server.Active;
+  EditPort.Enabled := not WebServerService.Server.Active;
 end;
 
 procedure TForm1.ButtonOpenBrowserClick(Sender: TObject);
@@ -64,22 +64,22 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 begin
-  fServer.StartServer(StrToInt(EditPort.Text), '', '', '');
+  WebServerService.Server.StartServer(StrToInt(EditPort.Text), '', '', '');
 end;
 
 procedure TForm1.ButtonStopClick(Sender: TObject);
 begin
-  fServer.StopServer;
+  WebServerService.Server.StopServer;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  FServer:=TWebServer.Create;
+  EditPort.Text:=IntToStr(WebServerService.Prefs.Port);
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  FServer.Free;
+  WebServerService.Prefs.Port:=StrToIntDef(EditPort.Text, 0);
 end;
 
 end.

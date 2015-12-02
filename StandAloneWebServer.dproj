@@ -71,8 +71,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -87,13 +87,17 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DelphiCompile>
         <DCCReference Include="FormUnit.pas">
             <Form>Form1</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="WebModuleUnit.pas">
             <Form>WebModule1</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TWebModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="WebServerUnit.pas"/>
+        <DCCReference Include="WebServerSvc.pas">
+            <Form>WebServerService</Form>
+            <DesignClass>TService</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Prefs.pas"/>
         <None Include="web\Main.html"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -151,16 +155,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
                     <Excluded_Packages Name="C:\DevBin\Projects_TRUNK_XE7\Bpl\Win32\dcldxSkinsDesignHelperRS19.bpl">ExpressSkins Library Uses Clause Auto Fill Helper by Developer Express Inc.</Excluded_Packages>
                     <Excluded_Packages Name="C:\DevBin\Projects_TRUNK_XE7\Bpl\Win32\dcldxSkinscxEditorsHelperRS19.bpl">ExpressSkins Library Uses Clause Auto Fill Helper for ExpressEditors by Developer Express Inc.</Excluded_Packages>
                     <Excluded_Packages Name="C:\DevBin\Projects_TRUNK_XE7\Bpl\Win32\dcldxSkinscxPCPainterRS19.bpl">ExpressSkins Library Uses Clause Auto Fill Helper for PageControl Painter by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\DevBin\Projects_TRUNK_XE7\Bpl\Win32\madExceptVcl_.bpl">madExceptVcl 2.1.0  -  www.madshi.net</Excluded_Packages>
-                    <Excluded_Packages Name="C:\DevBin\Projects_TRUNK_XE7\Bpl\Win32\madExceptIde_.bpl">madExceptIde 1.1.0  -  www.madshi.net</Excluded_Packages>
-                    <Excluded_Packages Name="C:\DevBin\Projects_TRUNK_XE7\Bpl\Win32\madExceptWizard_.bpl">madExceptWizard 3.1.5  -  www.madshi.net</Excluded_Packages>
                 </Excluded_Packages>
                 <Source>
                     <Source Name="MainSource">StandAloneWebServer.dpr</Source>
                 </Source>
             </Delphi.Personality>
             <Deployment>
-                <DeployFile LocalName="Win32\Debug\StandAloneWebServer.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win32\StandAloneWebServer.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>StandAloneWebServer.exe</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -169,6 +170,12 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 <DeployFile LocalName="web\Main.html" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win32\Debug\StandAloneWebServer.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>StandAloneWebServer.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
