@@ -12,7 +12,8 @@ uses
   WebServerUnit in 'WebServerUnit.pas',
   WebServerSvc in 'WebServerSvc.pas' {WebServerService: TService},
   Prefs in 'Prefs.pas',
-  ServiceUtilsU in 'ServiceUtilsU.pas';
+  ServiceUtilsU in 'ServiceUtilsU.pas',
+  IdSSLOpenSSL_ECDH_Util in 'IdSSLOpenSSL_ECDH_Util.pas';
 
 {$R *.res}
 
@@ -45,7 +46,7 @@ begin
     // run the Vcl.Forms.Appication object
     //Vcl.Forms.Application.MainFormOnTaskbar := True;
     Vcl.Forms.Application.CreateForm(TWebServerService, WebServerService);
-    Vcl.Forms.Application.ShowMainForm := True;
+  Vcl.Forms.Application.ShowMainForm := True;
     Vcl.Forms.Application.CreateForm(TForm1, Form1);
     Vcl.Forms.Application.Run;
   end

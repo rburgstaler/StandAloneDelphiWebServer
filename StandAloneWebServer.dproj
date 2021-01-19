@@ -105,6 +105,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DCCReference>
         <DCCReference Include="Prefs.pas"/>
         <DCCReference Include="ServiceUtilsU.pas"/>
+        <DCCReference Include="IdSSLOpenSSL_ECDH_Util.pas"/>
         <None Include="web\Main.html"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

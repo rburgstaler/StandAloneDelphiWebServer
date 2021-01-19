@@ -9,6 +9,7 @@ uses
   IdGlobal,
   IdSSL,
   IdSchedulerOfThreadPool,
+  IdSSLOpenSSL_ECDH_Util,
   IdHTTPWebBrokerBridge;
 
 
@@ -27,7 +28,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
+    procedure StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile, ADHParamsFile: String);
     procedure StopWebServer;
     property Port: Integer read getPort;
     property Secure: Boolean read getSecure;
@@ -89,7 +90,7 @@ begin
   VUseSSL:=fSSLEnabled;
 end;
 
-procedure TWebServer.StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
+procedure TWebServer.StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile, ADHParamsFile: String);
 var
   lHandler: TIdServerIOHandlerSSLOpenSSL;
 begin
@@ -107,6 +108,7 @@ begin
       fSSLPrivateKeyPassword:=ASSLPrivateKeyPassword;
       lHandler.SSLOptions.CertFile:=ASSLCertFile;
       lHandler.SSLOptions.KeyFile:=ASSLPrivateKeyFile;
+      lHandler.SSLOptions.DHParamsFile:=ADHParamsFile;
       FServer.IOHandler:=lHandler;
     end;
 
@@ -114,6 +116,11 @@ begin
     fServer.DefaultPort := APort;  // if we do not set the default port, and we only set fServer.Bindings.Add.Port := aPort, then it is 3 time slower for some reason.  I don't know why, it just is.
 
     FServer.Active := True;
+    if Assigned(lHandler) then
+    begin
+      //Must happen after activation so the SSLContext is initialized
+      IdSSLSetECDHAuto(lHandler.SSLContext);
+    end;
   end;
 end;
 
