@@ -94,9 +94,23 @@ procedure TWebServer.StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPriv
 var
   lHandler: TIdServerIOHandlerSSLOpenSSL;
 begin
-  if FServer.Active and (FServer.DefaultPort<>APort) then StopWebServer;
-
+  //Only set the handler if it is the ssl handler
+  lHandler:=nil;
+  if (FServer.IOHandler is TIdServerIOHandlerSSLOpenSSL) then lHandler:=FServer.IOHandler as TIdServerIOHandlerSSLOpenSSL;
   fSSLEnabled:=(ASSLPrivateKeyFile<>'') and (ASSLCertFile<>'');
+  //Detect if any settings have changed.
+  if (FServer.DefaultPort<>APort) then StopWebServer             //Do the ports match
+  else if (Assigned(lHandler)<>fSSLEnabled) then StopWebServer   //Does the use of using SSL match
+  else if Assigned(lHandler) then
+  begin
+    //Check whether any of the SSL paramters match
+    if fSSLPrivateKeyPassword<>ASSLPrivateKeyPassword then StopWebServer
+    else if lHandler.SSLOptions.CertFile<>ASSLCertFile then StopWebServer
+    else if lHandler.SSLOptions.KeyFile<>ASSLPrivateKeyFile then StopWebServer
+    else if lHandler.SSLOptions.DHParamsFile<>ADHParamsFile then StopWebServer;
+  end;
+
+
   if not FServer.Active then
   begin
     lHandler := nil;
@@ -129,6 +143,8 @@ begin
   TerminateThreads;
   FServer.Active := False;
   FServer.Bindings.Clear;
+  //If we created the handler... then we are responsible for freeing it
+  if not FServer.ImplicitIOHandler then FServer.IOHandler.Free;
 end;
 
 procedure TWebServer.TerminateThreads;
