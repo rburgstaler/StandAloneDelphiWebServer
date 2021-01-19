@@ -91,10 +91,11 @@ begin
   fSSLEnabled:=(ASSLPrivateKeyFile<>'') and (ASSLCertFile<>'');
   if not FServer.Active then
   begin
+    lHandler := nil;
     if fSSLEnabled then
     begin
       lHandler:=TIdServerIOHandlerSSLOpenSSL.Create;
-      lHandler.SSLOptions.Method := sslvSSLv23;
+      lHandler.SSLOptions.SSLVersions := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
       lHandler.OnGetPassword := GetSSLPassword;
       fSSLPrivateKeyPassword:=ASSLPrivateKeyPassword;
       lHandler.SSLOptions.CertFile:=ASSLCertFile;
@@ -102,8 +103,9 @@ begin
       FServer.IOHandler:=lHandler;
     end;
 
-    FServer.Bindings.Clear;
-    FServer.Bindings.Add.Port:=APort;
+    fServer.Bindings.Clear;
+    fServer.DefaultPort := APort;  // if we do not set the default port, and we only set fServer.Bindings.Add.Port := aPort, then it is 3 time slower for some reason.  I don't know why, it just is.
+
     FServer.Active := True;
   end;
 end;
