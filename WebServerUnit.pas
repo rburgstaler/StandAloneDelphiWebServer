@@ -27,8 +27,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure StartServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
-    procedure StopServer;
+    procedure StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
+    procedure StopWebServer;
     property Port: Integer read getPort;
     property Secure: Boolean read getSecure;
     property Active: Boolean read getActive;
@@ -55,7 +55,7 @@ end;
 
 destructor TWebServer.Destroy;
 begin
-  StopServer;
+  StopWebServer;
   FServer.Scheduler.Free;
   FServer.Free;
   inherited;
@@ -89,11 +89,11 @@ begin
   VUseSSL:=fSSLEnabled;
 end;
 
-procedure TWebServer.StartServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
+procedure TWebServer.StartWebServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
 var
   lHandler: TIdServerIOHandlerSSLOpenSSL;
 begin
-  if FServer.Active and (FServer.DefaultPort<>APort) then StopServer;
+  if FServer.Active and (FServer.DefaultPort<>APort) then StopWebServer;
 
   fSSLEnabled:=(ASSLPrivateKeyFile<>'') and (ASSLCertFile<>'');
   if not FServer.Active then
@@ -117,7 +117,7 @@ begin
   end;
 end;
 
-procedure TWebServer.StopServer;
+procedure TWebServer.StopWebServer;
 begin
   TerminateThreads;
   FServer.Active := False;

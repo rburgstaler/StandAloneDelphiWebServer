@@ -73,12 +73,12 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 begin
-  WebServerService.Server.StartServer(StrToInt(EditPort.Text), EditSSLPrivateKeyFile.Text, EditSSLPrivateKeyPassword.Text, EditSSLCertFile.Text);
+  WebServerService.Server.StartWebServer(StrToInt(EditPort.Text), EditSSLPrivateKeyFile.Text, EditSSLPrivateKeyPassword.Text, EditSSLCertFile.Text);
 end;
 
 procedure TForm1.ButtonStopClick(Sender: TObject);
 begin
-  WebServerService.Server.StopServer;
+  WebServerService.Server.StopWebServer;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

@@ -75,12 +75,12 @@ procedure TWebServerService.ServiceStart(Sender: TService;
   var Started: Boolean);
 begin
   CoInitialize(nil);
-  fServer.StartServer(fPrefs.Port, fPrefs.SSLPrivateKeyFile, fPrefs.SSLPrivateKeyPassword, fPrefs.SSLCertFile);
+  fServer.StartWebServer(fPrefs.Port, fPrefs.SSLPrivateKeyFile, fPrefs.SSLPrivateKeyPassword, fPrefs.SSLCertFile);
 end;
 
 procedure TWebServerService.ServiceStop(Sender: TService; var Stopped: Boolean);
 begin
-  fServer.StopServer;
+  fServer.StopWebServer;
   CoUninitialize;
 end;
 
