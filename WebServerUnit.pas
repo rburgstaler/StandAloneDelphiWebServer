@@ -8,6 +8,7 @@ uses
   IdSSLOpenSSL,
   IdGlobal,
   IdSSL,
+  IdSchedulerOfThreadPool,
   IdHTTPWebBrokerBridge;
 
 
@@ -45,11 +46,17 @@ begin
   inherited;
   FServer:=TIdHTTPWebBrokerBridge.Create(nil);
   FServer.OnQuerySSLPort:=OnHTTPQuerySSLPort;
+  FServer.Scheduler:=TIdSchedulerOfThreadPool.Create(nil);
+  //The following settings REALLY improve performance for simultaneous requests
+  TIdSchedulerOfThreadPool(FServer.Scheduler).PoolSize:=10;
+  //Most significant improvement is with KeepAlive set to true
+  FServer.KeepAlive:=True;
 end;
 
 destructor TWebServer.Destroy;
 begin
   StopServer;
+  FServer.Scheduler.Free;
   FServer.Free;
   inherited;
 end;
