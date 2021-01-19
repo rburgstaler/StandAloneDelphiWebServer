@@ -6,6 +6,7 @@ uses
   Classes,
   SysUtils,
   IdSSLOpenSSL,
+  IdGlobal,
   IdSSL,
   IdHTTPWebBrokerBridge;
 
@@ -15,10 +16,12 @@ type
   private
     FServer: TIdHTTPWebBrokerBridge;
     fSSLPrivateKeyPassword: String;
+    fSSLEnabled: Boolean;
     procedure TerminateThreads;
     function getActive: Boolean;
     function getPort: Integer;
     procedure GetSSLPassWord(var Password: String);
+    procedure OnHTTPQuerySSLPort(APort: TIdPort; var VUseSSL: Boolean);
     function getSecure: Boolean;
   public
     constructor Create;
@@ -41,6 +44,7 @@ constructor TWebServer.Create;
 begin
   inherited;
   FServer:=TIdHTTPWebBrokerBridge.Create(nil);
+  FServer.OnQuerySSLPort:=OnHTTPQuerySSLPort;
 end;
 
 destructor TWebServer.Destroy;
@@ -73,15 +77,21 @@ begin
   Password:=fSSLPrivateKeyPassword;
 end;
 
+procedure TWebServer.OnHTTPQuerySSLPort(APort: TIdPort; var VUseSSL: Boolean);
+begin
+  VUseSSL:=fSSLEnabled;
+end;
+
 procedure TWebServer.StartServer(APort: Integer; ASSLPrivateKeyFile, ASSLPrivateKeyPassword, ASSLCertFile: String);
 var
   lHandler: TIdServerIOHandlerSSLOpenSSL;
 begin
   if FServer.Active and (FServer.DefaultPort<>APort) then StopServer;
 
+  fSSLEnabled:=(ASSLPrivateKeyFile<>'') and (ASSLCertFile<>'');
   if not FServer.Active then
   begin
-    if (ASSLPrivateKeyFile<>'') and (ASSLPrivateKeyPassword<>'') and (ASSLCertFile<>'') then
+    if fSSLEnabled then
     begin
       lHandler:=TIdServerIOHandlerSSLOpenSSL.Create;
       lHandler.SSLOptions.Method := sslvSSLv23;
