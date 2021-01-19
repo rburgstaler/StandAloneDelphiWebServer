@@ -7,12 +7,12 @@ uses
   Vcl.Forms,
   Web.WebReq,
   SvcMgr,
-  ServiceUtils,
   FormUnit in 'FormUnit.pas' {Form1},
   WebModuleUnit in 'WebModuleUnit.pas' {WebModule1: TWebModule},
   WebServerUnit in 'WebServerUnit.pas',
   WebServerSvc in 'WebServerSvc.pas' {WebServerService: TService},
-  Prefs in 'Prefs.pas';
+  Prefs in 'Prefs.pas',
+  ServiceUtilsU in 'ServiceUtilsU.pas';
 
 {$R *.res}
 
@@ -45,7 +45,7 @@ begin
     // run the Vcl.Forms.Appication object
     //Vcl.Forms.Application.MainFormOnTaskbar := True;
     Vcl.Forms.Application.CreateForm(TWebServerService, WebServerService);
-  Vcl.Forms.Application.ShowMainForm := True;
+    Vcl.Forms.Application.ShowMainForm := True;
     Vcl.Forms.Application.CreateForm(TForm1, Form1);
     Vcl.Forms.Application.Run;
   end
